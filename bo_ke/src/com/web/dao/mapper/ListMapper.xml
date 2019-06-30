@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.web.dao.ListMapper" >
+
+ <resultMap id="BaseResultMap" type="com.web.domain.Article" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="author" property="author" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+    <result column="date" property="date" jdbcType="TIMESTAMP" />
+    <result column="reply" property="reply" jdbcType="VARCHAR" />
+    
+    <result column="theme" property="theme" jdbcType="VARCHAR" />
+    <result column="label" property="label" jdbcType="VARCHAR" />
+    <result column="intro" property="intro" jdbcType="VARCHAR" />
+    <result column="userid" property="userid" jdbcType="INTEGER" />
+  </resultMap>
+
+
+  <sql id="Base_Column_List" >
+    id,title,author,content,date,reply,theme,label,intro,userid
+  </sql>
+<select id="findAll" resultMap="BaseResultMap" >
+  select
+   <include refid="Base_Column_List" />
+    from article order by date desc limit 0,1
+  </select>
+
+
+    <!-- 查询文章总数，用于分页 -->
+    <select id="getArticlesCounts" resultType="Integer" parameterType="java.lang.Integer">
+        select count(*) from article 
+    </select>
+
+  <select id="getArticleList" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select 
+<include refid="Base_Column_List" />
+ from article order by date desc limit #{num},1
+    </select>
+    
+  <select id="findArticleById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  select
+    <include refid="Base_Column_List" />
+    from article  where id = #{id,jdbcType=INTEGER}
+  </select>
+</mapper>

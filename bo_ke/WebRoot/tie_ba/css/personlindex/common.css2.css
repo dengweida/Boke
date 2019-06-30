@@ -1,0 +1,86 @@
+.headerModule2 {
+	background-color: #F2F2F2;
+	border-bottom: 1px solid #e9e8e8;
+	min-width: 960px;
+}
+
+.headerModule2 .box {
+	*zoom: 1;
+	height: 87px;
+	line-height: 87px;
+	width: 960px;
+	margin: 0 auto
+}
+
+.headerModule2 .box:before,.headerModule2 .box:after {
+	clear: both;
+	display: table;
+	content: "";
+	line-height: 0
+}
+
+.headerModule2 .box .logo {
+	float: left;margin-top: 0px;*margin-top:2px; 
+}
+
+
+.headerModule2 .box .nav {
+	float: left;
+	margin-left: 8px
+}
+
+.headerModule2 .box .nav ul li {
+	float: left
+}
+
+.headerModule2 .box .nav ul li a {
+	display: block;
+	margin-left: 25px;
+	color: #2d2d2d;
+	font-size: 16px
+}
+
+.headerModule2 .box .nav ul li a:hover {
+	color:#878787
+}
+.logged-out-wrapper {
+	color: #7d7d7d;
+	display: none;
+	float: left;
+	max-width: 70px;
+	position: relative;
+	cursor: pointer
+}
+
+
+.headerModule2 .box .menu {
+	float: right;
+	margin-right: 8px
+}
+.headerModule2 .box .menu ul li {
+	float: left
+}
+
+.headerModule2 .box .menu ul li a {
+	display: block;
+	margin-left: 18px;
+	color: #363636;
+	font-size: 14px
+}
+
+.headerModule2 .box .menu ul li a:hover {
+	color:#878787
+}
+.headerModule2 .box .menu ul li .author{position:relative;color:#999}
+.headerModule2 .box .menu ul li .author img{
+	width:32px;
+	height:32px;
+	position:absolute;
+	left:-18px;
+	top:9px;
+	-webkit-border-radius:50%;
+	-moz-border-radius:50%;
+	border-radius:50%;
+	display:block;
+	behavior: url(PIE.htc)/*tpa=http://bbs.diyhi.com/common/default/pc/css/common/default/pc/js/css3pie/PIE.htc*/;  /*通知IE浏览器调用脚本作用于当前类*/
+}

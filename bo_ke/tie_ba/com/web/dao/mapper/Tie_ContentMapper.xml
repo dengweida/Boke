@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.web.dao.Tie_ContentMapper" >
+
+ <resultMap id="tie_ResultMap" type="com.web.domain.Tieba_content" >
+    <id column="t_id" property="t_id" jdbcType="INTEGER" />
+    <result column="t_title" property="t_title" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+    <result column="t_date" property="t_date" jdbcType="TIMESTAMP"/>
+    <result column="t_image1" property="t_image1" jdbcType="LONGVARCHAR" />
+     <result column="t_image2" property="t_image2" jdbcType="LONGVARCHAR" />
+      <result column="t_image3" property="t_image3" jdbcType="LONGVARCHAR" />
+      <result column="t_resultSnumber" property="t_resultSnumber" jdbcType="VARCHAR" />
+      <association property="user" javaType="com.web.domain.User">
+			       <id column="userid" property="userid" jdbcType="INTEGER" />
+				    <result column="resultSnumber" property="resultSnumber" jdbcType="VARCHAR" />
+				    <result column="resultSname" property="resultSname" jdbcType="VARCHAR" />
+				    <result column="resultSex" property="resultSex" jdbcType="VARCHAR" />
+				    <result column="resultSlevel" property="resultSlevel" jdbcType="VARCHAR" />
+				    <result column="resultSdept" property="resultSdept" jdbcType="VARCHAR" />
+				    <result column="resultSmajor" property="resultSmajor" jdbcType="VARCHAR" />
+				    <result column="resultSclass" property="resultSclass" jdbcType="VARCHAR" />
+				    <result column="resultSstarttime" property="resultSstarttime" jdbcType="VARCHAR" />
+				    <result column="image" property="image" jdbcType="LONGVARCHAR" />
+	      </association>
+ </resultMap>
+  <resultMap id="tie_repl_ResultMap" type="com.web.domain.Tieba_reply" >
+             <id column="t_reply_id" property="t_reply_id" jdbcType="INTEGER" />
+			   <result column="t_reply_content" property="t_reply_content" jdbcType="LONGVARCHAR" />
+			   <result column="t_id" property="t_id" jdbcType="INTEGER" />
+			   <result column="t_reply_resultSnumber" property="t_reply_resultSnumber" jdbcType="VARCHAR" />
+			   <result column="t_reply_date" property="t_reply_date" jdbcType="TIMESTAMP" />
+			    <association property="user" javaType="com.web.domain.User">
+			       <id column="userid" property="userid" jdbcType="INTEGER" />
+				    <result column="resultSnumber" property="resultSnumber" jdbcType="VARCHAR" />
+				    <result column="resultSname" property="resultSname" jdbcType="VARCHAR" />
+				    <result column="resultSex" property="resultSex" jdbcType="VARCHAR" />
+				    <result column="resultSlevel" property="resultSlevel" jdbcType="VARCHAR" />
+				    <result column="resultSdept" property="resultSdept" jdbcType="VARCHAR" />
+				    <result column="resultSmajor" property="resultSmajor" jdbcType="VARCHAR" />
+				    <result column="resultSclass" property="resultSclass" jdbcType="VARCHAR" />
+				    <result column="resultSstarttime" property="resultSstarttime" jdbcType="VARCHAR" />
+				    <result column="image" property="image" jdbcType="LONGVARCHAR" />
+	      </association>
+  </resultMap>
+
+ <insert id="addContent" parameterType="com.web.domain.Tieba_content" >
+    insert into tieba_content
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="t_title != null" >
+        t_title,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="t_date != null" >
+        t_date,
+      </if>
+      <if test="t_image1 != null" >
+        t_image1,
+      </if>
+      <if test="t_image2 != null" >
+        t_image2,
+      </if>
+      <if test="t_image3 != null" >
+        t_image3,
+      </if>
+      <if test="t_resultSnumber != null" >
+        t_resultSnumber,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="t_title != null" >
+        #{t_title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="t_date != null" >
+        #{t_date},
+      </if>
+      <if test="t_image1 != null" >
+        #{t_image1,jdbcType=LONGVARCHAR},
+      </if>
+       <if test="t_image2 != null" >
+        #{t_image2,jdbcType=LONGVARCHAR},
+      </if>
+       <if test="t_image3 != null" >
+        #{t_image3,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="t_resultSnumber != null" >
+        #{t_resultSnumber,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+    
+ <sql id="Tieba_Column_List" >
+    t_id,t_title,content,t_date,t_image1,t_image2,t_image3,t_resultSnumber
+  </sql>
+  <sql id="User_Column_List" >
+    userid,resultSnumber,resultSname,resultSex,resultSlevel,resultSdept,resultSmajor,resultSclass,resultSstarttime,image
+  </sql>
+  <sql id="Tieba_reply_Column_List" >
+    t_reply_id,t_reply_content,t_id,t_reply_resultSnumber,t_reply_date
+  </sql>
+
+  <!-- 查找帖子list列表 -->
+  <select id="findAllPage" resultMap="tie_ResultMap" >
+  select
+   <include refid="Tieba_Column_List" />
+    from tieba_content /*keep orderby*/order by t_date desc
+  </select>
+  
+  <!-- 根据t_id查找帖子详情内容 -->
+  <select id="findTieziById" resultMap="tie_ResultMap" parameterType="java.lang.Integer" >
+  select
+   <include refid="Tieba_Column_List" />,resultSname,resultSmajor,resultSstarttime
+    from tieba_content t,user u where t.t_id = #{t_id,jdbcType=INTEGER} and u.resultSnumber = t.t_resultSnumber
+  </select>
+  
+  <!-- 根据t_id查找帖子回复内容 —倒序-->
+   <select id="findTieziHuifuByIdDao" resultMap="tie_repl_ResultMap" parameterType="java.lang.Integer" >
+  select
+   <include refid="Tieba_reply_Column_List" />,u.resultSname,u.resultSmajor,u.resultSstarttime
+    from tieba_reply t,user u where t.t_id = #{0,jdbcType=INTEGER} and u.resultSnumber = t.t_reply_resultSnumber /*keep orderby*/order by t_reply_date desc LIMIT #{1},5
+  </select>
+
+<!-- 根据t_id查找帖子回复内容 —正序-->
+   <select id="findTieziHuifuByIdZheng" resultMap="tie_repl_ResultMap" parameterType="java.lang.Integer" >
+  select
+   <include refid="Tieba_reply_Column_List" />,u.resultSname,u.resultSmajor,u.resultSstarttime
+    from tieba_reply t,user u where t.t_id = #{0,jdbcType=INTEGER} and u.resultSnumber = t.t_reply_resultSnumber LIMIT #{1},5
+  </select>
+  <!-- 根据t_id查找帖子回复总数-->
+   <select id="findTieziCount" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+  select count(*)from tieba_reply  where t_id = #{t_id,jdbcType=INTEGER}
+  </select>
+
+<!-- 发表回复 -->
+<insert id="addReply" parameterType="com.web.domain.Tieba_reply" >
+    insert into tieba_reply
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="t_reply_content != null" >
+        t_reply_content,
+      </if>
+      <if test="t_id != null" >
+        t_id,
+      </if>
+      <if test="t_reply_resultSnumber != null" >
+        t_reply_resultSnumber,
+      </if>
+      <if test="t_reply_date != null" >
+        t_reply_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="t_reply_content != null" >
+        #{t_reply_content,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="t_id != null" >
+        #{t_id,jdbcType=INTEGER},
+      </if>
+      <if test="t_reply_resultSnumber != null" >
+        #{t_reply_resultSnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="t_reply_date != null" >
+        #{t_reply_date},
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 查找我发布的帖子 -->
+<select id="findMyTiezi" resultMap="tie_ResultMap" parameterType="String">
+  select
+   <include refid="Tieba_Column_List" />
+    from tieba_content where t_resultSnumber= #{t_resultSnumber,jdbcType=VARCHAR}/*keep orderby*/order by t_date desc
+  </select>
+</mapper>
